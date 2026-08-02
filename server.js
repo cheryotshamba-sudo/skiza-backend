@@ -4,7 +4,7 @@ const multer = require("multer");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
-const Upload = require("./models/Upload");
+const Upload = require("./Upload");
 require("dotenv").config();
 
 cloudinary.config({
