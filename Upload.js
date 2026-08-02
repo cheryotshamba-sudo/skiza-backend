@@ -5,6 +5,10 @@ const uploadSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  imageUrl: {
+    type: String,
+    required: true
+  },
   uploadedAt: {
     type: Date,
     default: Date.now
