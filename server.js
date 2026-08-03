@@ -94,28 +94,30 @@ app.get("/uploads", async (req, res) => {
 
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-app.get("/uploads", async (req, res) => {
+app.get("/stats", async (req, res) => {
 
   try {
 
-    const uploads = await Upload.find().sort({
-      uploadedAt: -1
-    });
+    const totalUploads = await Upload.countDocuments();
 
-    res.json(uploads);
+    res.json({
+      success: true,
+      totalUploads
+    });
 
   } catch (error) {
 
     res.status(500).json({
       success: false,
-      message: "Failed to fetch uploads"
+      message: "Failed to fetch stats"
     });
 
   }
 
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
