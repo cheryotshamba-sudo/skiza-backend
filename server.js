@@ -94,10 +94,9 @@ app.get("/uploads", async (req, res) => {
 
 });
 
+
 app.get("/stats", async (req, res) => {
-
   try {
-
     const totalUploads = await Upload.countDocuments();
 
     res.json({
@@ -107,15 +106,15 @@ app.get("/stats", async (req, res) => {
 
   } catch (error) {
 
+    console.error("Stats Error:", error);
+
     res.status(500).json({
       success: false,
-      message: "Failed to fetch stats"
+      message: error.message
     });
 
   }
-
 });
-
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
