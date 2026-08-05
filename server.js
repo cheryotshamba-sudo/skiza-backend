@@ -85,14 +85,16 @@ app.post("/upload", upload.single("screenshot"), async (req,res)=>{
     fs.unlinkSync(req.file.path);
 
 
+const newUpload = new Upload({
 
-    const newUpload = new Upload({
+  filename: req.file.originalname,
 
-      filename:req.file.originalname,
+  imageUrl: result.secure_url,
 
-      imageUrl:result.secure_url
+  publicId: result.public_id
 
-    });
+});
+    
 
 
 
@@ -369,7 +371,45 @@ message:"Invalid username or password"
 
 
 
+// Delete upload
+app.delete("/uploads/:id", async (req, res) => {
 
+    try {
+
+        const upload = await Upload.findById(req.params.id);
+
+        if (!upload) {
+            return res.status(404).json({
+                success: false,
+                message: "Upload not found"
+            });
+        }
+
+        // Delete from Cloudinary
+        if (upload.publicId) {
+            await cloudinary.uploader.destroy(upload.publicId);
+        }
+
+        // Delete from MongoDB
+        await Upload.findByIdAndDelete(req.params.id);
+
+        res.json({
+            success: true,
+            message: "Screenshot deleted successfully"
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Delete failed"
+        });
+
+    }
+
+});
 
 const PORT = process.env.PORT || 3000;
 
