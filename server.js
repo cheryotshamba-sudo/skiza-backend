@@ -97,7 +97,7 @@ app.post("/upload", upload.single("screenshot"), async (req,res)=>{
 
 
     await newUpload.save();
-
+console.log("✅ Saved to MongoDB");
 
 
     res.json({
